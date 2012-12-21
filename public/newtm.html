@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Torrent Manager</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js"></script>
+    <script src="/javascripts/newtm.js"></script>
+</head>
+<body id="theBody">
+
+<div data-role="page" id="homePage">
+    <div data-role="header" data-position="fixed">
+        <h1>Home</h1>
+    </div>
+    
+    <div data-role="content">
+        <ul data-role="listview" id="home_list">
+            <li><a href="#tvPage">TV Shows</a></li>
+            <li><a href="#settingsPage">Settings</a></li>
+        </ul>
+    </div>
+</div>
+
+<div data-role="page" id="tvPage">
+    <div data-role="header" data-position="fixed">
+        <a href="#homePage" class="ui-btn-left" data-icon="home">Home</a>
+        <h1>TV Shows</h1>
+        <button id="refresh_tv" class="ui-btn-right" data-icon="refresh">Refresh</button>
+    </div>
+    
+    <div data-role="content">
+        <ul data-role="listview" data-filter="true"  id="tv_list"></ul>
+    </div>
+</div>
+
+<div data-role="page" id="resultPage">
+    <div data-role="header" data-position="fixed">
+        <a href="#tvPage" class="ui-btn-left" data-icon="home">Shows</a>
+        <h1>Search Results</h1>
+    </div>
+    
+    <div data-role="content">
+        <ul data-role="listview" data-filter="true"  id="results_list"></ul>
+    </div>
+</div>
+
+<div data-role="page" id="settingsPage">
+    <div data-role="header" data-position="fixed">
+        <a href="#homePage" data-icon="home">Home</a>
+        <h1>Settings</h1>
+    </div>
+    
+    <div data-role="content">
+        <p>Page content goes here.</p>
+    </div>
+</div>
+
+<div data-role="page" id="searchPage">
+    <div data-role="header" data-position="fixed">
+        <a href="#tvPage" data-icon="delete">Close</a>
+        <h1>Search</h1>
+    </div>
+    
+    <div data-role="content">
+        <label for="show">Title:</label><input data-clear-btn="true" type="text" name="show" id="show" pattern=".+" value="">
+        <label for="show">Season:</label><input data-clear-btn="true" type="number" name="season" id="season" pattern="[0-9]*" value="">
+        <label for="show">Episode:</label><input data-clear-btn="true" type="number" name="episode" id="episode" pattern="[0-9]*" value="">
+        <button id="searchButton" class="ui-btn" data-icon="refresh">Search</button>
+    </div>
+</div>
+
+<div data-role="page" id="notification">
+    <div data-role="header" data-position="fixed">
+        <a href="#tvPage" data-icon="delete">Close</a>
+        <h1>Notice</h1>
+    </div>
+    
+    <div data-role="content">
+    </div>
+</div>
+
+</body>
+</html>
