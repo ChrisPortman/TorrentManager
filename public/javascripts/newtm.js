@@ -74,7 +74,7 @@ function searchTv() {
 
     if ( pattern.test(episode) ) {
         episode   = pad(episode, 2, 0);
-        searchStr = searchStr+" E"+episode;
+        searchStr = searchStr+"E"+episode;
     }
 
     console.log(searchStr);
