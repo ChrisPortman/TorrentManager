@@ -82,8 +82,8 @@ sub getEpisodes {
     if ( opendir($dh, $dir) ) {
         my @episodes;
         
-        for my $episode ( grep { -f $dir.'/'.$_ and $_ =~ /^Episode\s\d+\s?x\s?\d+\..+$/i } readdir($dh) ) {
-            my ($episodeNo) = $episode =~ /\d+\s?x\s?(\d+)/;
+        for my $episode ( grep { -f $dir.'/'.$_ and $_ =~ /^Episode\s(?:\d+\s?x\s?\d+)(?:\s?-\s?\d+\s?x\s?\d+)?\..+$/i } readdir($dh) ) {
+            my ($episodeNo) = $episode =~ /(\d+)[^\d]*$/;
             push @episodes, { 'episode' => $episodeNo, 'file' => $episode };
         }
         
