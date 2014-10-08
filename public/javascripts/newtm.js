@@ -1,6 +1,4 @@
 $(document).ready(function(){
-    localStorage.setItem("apikey", "cin12dy12cin12dy12");
-
     $( "#tvPage" ).page({
         beforecreate: function( event, ui ) {
             loadTvShows();
@@ -13,39 +11,40 @@ $(document).ready(function(){
     } );
     
     $( "#searchButton" ).click( function(){ searchTv() } );
+    $( "#settingsButton" ).click( function(){ applySettings() } );
+    $( "#key" ).val(apikey());
 });
 
 
 function loadTvShows (shows) {
     console.log("loading TV shows");
-    apikey = localStorage.getItem('apikey');
-    if (apikey) {
-        $.ajax( {
-            url    : '/api/tv/shows?apikey=' + apikey,
-            success: function( data ) {
-                $("#tv_list").empty();
 
-                var shows = data.data;
-                for (i in shows) {
-                    var show    = shows[i];
-                    var title   = show.title;
-                    var season  = show.lastSeason; 
-                    var episode = show.lastEpisode;
+    var key = apikey();
+    $.ajax( {
+        url    : '/api/tv/shows?apikey=' + key,
+        success: function( data ) {
+            $("#tv_list").empty();
 
-                    $("#tv_list").append($('<li><a data-rel="dialog"><h2>'+title+'</h2><p>Season:'+season+' Episode:'+episode+'</p></a></li>').click(function(){ showSearch($(this) ) }));
-                }
-                $( "#tv_list" ).listview( "refresh" );
-                $.mobile.loading('hide');
-            },    
-            error: function( result ) {
-                var error = result.responseJSON.error;
-                $.mobile.loading('hide');
-                $('#theBody').pagecontainer( "change", "#notification", { role: "dialog" } );
-                $('#notificationHeader').text('Failure');
-                $('#notificationText').text('Error: '+error);           
-            },
-        } );
-    }
+            var shows = data.data;
+            for (i in shows) {
+                var show    = shows[i];
+                var title   = show.title;
+                var season  = show.lastSeason; 
+                var episode = show.lastEpisode;
+
+                $("#tv_list").append($('<li><a data-rel="dialog"><h2>'+title+'</h2><p>Season:'+season+' Episode:'+episode+'</p></a></li>').click(function(){ showSearch($(this) ) }));
+            }
+            $( "#tv_list" ).listview( "refresh" );
+            $.mobile.loading('hide');
+        },    
+        error: function( result ) {
+            var error = result.responseJSON.error;
+            $.mobile.loading('hide');
+            $('#theBody').pagecontainer( "change", "#notification", { role: "dialog" } );
+            $('#notificationHeader').text('Failure');
+            $('#notificationText').text('Error: '+error);           
+        },
+    } );
 }
 
 function showSearch(element) {
@@ -85,9 +84,9 @@ function searchTv() {
     }
 
     console.log(searchStr);
-
+    var key = apikey();
     $.ajax( {
-        url    : '/api/torrents/search?apikey='+apikey+'&search='+searchStr+'&category=tv',
+        url    : '/api/torrents/search?apikey='+key+'&search='+searchStr+'&category=tv',
         success: function( results ) {
             $('#theBody').pagecontainer( "change", "#resultPage" );
             $("#results_list").empty();
@@ -126,8 +125,9 @@ function downloadTorrent(element) {
     console.log(url);
     console.log(hash);
 
+    var key = apikey();
     $.ajax( {
-        url    : '/api/torrents/download?apikey='+apikey+'&category=tv&url='+url+'&hash='+hash,
+        url    : '/api/torrents/download?apikey='+key+'&category=tv&url='+url+'&hash='+hash,
         success: function( result ) {
             $.mobile.loading('hide');
             $('#theBody').pagecontainer( "change", "#notification", { role: "dialog" } );
@@ -142,6 +142,45 @@ function downloadTorrent(element) {
             $('#notificationText').text('Error: '+error);           
         },    
     } );
+}
+
+function applySettings() {
+    $.mobile.loading('show', { text: "Applying Settings", textVisible: true, theme: 'b' });
+
+    var key = $('#key').val();
+    $.ajax( {
+        url    : '/api/test?apikey='+key,
+        success: function( result ) {
+            apikey(key);
+            $.mobile.loading('hide');
+            $('#theBody').pagecontainer( "change", "#notification", { role: "dialog" } );
+            $('#notificationHeader').text('Success');
+            $('#notificationText').text('Settings Applied');       
+        },
+        error: function( result ) {
+            var error = result.responseJSON.error;
+            $.mobile.loading('hide');
+            $('#theBody').pagecontainer( "change", "#notification", { role: "dialog" } );
+            $('#notificationHeader').text('Failure');
+            $('#notificationText').text('Error: '+error);           
+        },    
+    } );
+}
+
+function apikey(key) {
+    if (key) {
+        localStorage.setItem('apikey', key);
+    }
+    else {
+        key = localStorage.getItem('apikey');
+    }
+    
+    if (key) {
+        return key;
+    }
+    else {
+        return '';
+    }
 }
 
 function requestParam(name){

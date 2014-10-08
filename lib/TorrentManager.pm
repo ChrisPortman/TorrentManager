@@ -12,19 +12,16 @@ prepare_serializer_for_format;
 prefix '/';
 
 hook 'before' => sub {
+    my $config = config->{imdbIds};
     
-#    if ( request->path =~ '^/api' ) {
-        my $config = config->{imdbIds};
-        
-        unless (config->{'apikey'}) {
-            die "APIKEY not set in the configuration file for this environment.\n";
-        }
-        
-        unless ( params->{'apikey'} and params->{'apikey'} eq config->{'apikey'} ) {
-            error 'NO API KEY PROVIDED';
-            request->path_info('/noapikey');
-        }
-#    }
+    unless (config->{'apikey'}) {
+        die "APIKEY not set in the configuration file for this environment.\n";
+    }
+    
+    unless ( params->{'apikey'} and params->{'apikey'} eq config->{'apikey'} ) {
+        error 'NO API KEY PROVIDED';
+        request->path_info('/noapikey');
+    }
 };
 
 get '/' => sub {
