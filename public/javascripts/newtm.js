@@ -36,6 +36,13 @@ function loadTvShows (shows) {
                 }
                 $( "#tv_list" ).listview( "refresh" );
                 $.mobile.loading('hide');
+            },    
+            error: function( result ) {
+                var error = result.responseJSON.error;
+                $.mobile.loading('hide');
+                $('#theBody').pagecontainer( "change", "#notification", { role: "dialog" } );
+                $('#notificationHeader').text('Failure');
+                $('#notificationText').text('Error: '+error);           
             },
         } );
     }
@@ -102,6 +109,13 @@ function searchTv() {
             $( "#results_list" ).listview( "refresh" );
             $.mobile.loading('hide');
         },
+        error: function( result ) {
+            var error = result.responseJSON.error;
+            $.mobile.loading('hide');
+            $('#theBody').pagecontainer( "change", "#notification", { role: "dialog" } );
+            $('#notificationHeader').text('Failure');
+            $('#notificationText').text('Error: '+error);           
+        },    
     } );
 }
 
@@ -114,11 +128,19 @@ function downloadTorrent(element) {
 
     $.ajax( {
         url    : '/api/torrents/download?apikey='+apikey+'&category=tv&url='+url+'&hash='+hash,
-        success: function( results ) {
-            console.log('downloaded torrent');
-            console.log(results);
+        success: function( result ) {
             $.mobile.loading('hide');
+            $('#theBody').pagecontainer( "change", "#notification", { role: "dialog" } );
+            $('#notificationHeader').text('Success');
+            $('#notificationText').text('Torrent Downloaded');           
         },
+        error: function( result ) {
+            var error = result.responseJSON.error;
+            $.mobile.loading('hide');
+            $('#theBody').pagecontainer( "change", "#notification", { role: "dialog" } );
+            $('#notificationHeader').text('Failure');
+            $('#notificationText').text('Error: '+error);           
+        },    
     } );
 }
 
