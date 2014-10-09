@@ -51,7 +51,8 @@ function showSearch(element) {
     var title     = element.find("h2:first").text();
     var epDetails = element.find("p:first").text();
 
-    var pattern = /(\d+).*(\d+)$/;
+    console.log(epDetails);
+    var pattern = /(\d+)[^\d]*(\d+)$/;
     var parts   = pattern.exec(element[0].textContent);
     
     var season  = parts[1];
