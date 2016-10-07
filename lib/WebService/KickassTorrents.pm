@@ -11,7 +11,7 @@ package WebService::KickassTorrents;
     use XML::Simple;
     
     # Package Vars
-    my $API_HOSTNAME = 'kickass.to';
+    my $API_HOSTNAME = 'kickasstorrents.to';
     my $CLEAR_PROTO  = 'http://';
     my $SECURE_PROTO = 'https://';
     my $DEBUG        = 1;
